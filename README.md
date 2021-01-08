@@ -14,14 +14,17 @@ Prerequisites
 
 ## Datasets
 
-###train set and validation set
+### train set and validation set
+
 We use [3dcomplex](https://shmoo.weizmann.ac.il/elevy/3dcomplexV6/Home.cgi) and [masif](https://github.com/LPDI-EPFL/masif) datasets.
 
-###Independent test set
+### Independent test set
+
 We use [gremlin](https://shmoo.weizmann.ac.il/elevy/3dcomplexV6/Home.cgi), [evcomplex](https://evcouplings.org/),[benchmark 5.0](https://zlab.umassmed.edu/benchmark/) and [casp-capri](https://predictioncenter.org/download_area/) datasets.
 
-###Your own datasets
+### Your own datasets
 Please prepare the pdb file and the corresponding chain file, which are required by our scripts to generate inter-protein and intra-protein contact/distance map.
+
 ```bash
 # To generate the whole contact/distance map.
 cd generate_contact_map
@@ -31,15 +34,16 @@ bash work.sh
 
 ## Training New Models
 
-###on our datasets
+### on our datasets
 
 There are three folders to present  three kinds of datasets respectively. You can download the data [here](ftp:/202.112.126.139/protein-dimer-inpainting)
+
 ```bash
 # To train on the dataset.
 bash work_train.sh
 ```
 
-###on your own datasets
+### on your own datasets
 
 ```bash
 # To train on the you dataset, for example.
@@ -52,7 +56,9 @@ There are many options you can specify. Please use `python train.py --help` or s
 ## Pre-trained weights and test model
 
 There are three folders to present pre-trained for three kinds of datasets respectively. You can download the pre-trained model [here](ftp:/202.112.126.139/protein-dimer-inpainting). 
-###testing
+
+### testing
+
 ```bash
 # To train on the dataset.
 bash work_test.sh
@@ -61,7 +67,9 @@ bash work_test.sh
 ## Evaluation
 
 We calculate the precision,which is defined as TP/N. Such as Top 5, 10, 20, L/10, L/5, L/2, L used in the intra-protein contact map prediction. For the overall results, we calculate the mean precision. Additionaly, we calculate the success rate, which is defined the percentage of the targets with at least one successfully predicted contact when a certain number of predicted contacts are considered, compared to all the targets in the test set.
-###Precision & Success rate
+
+### Precision & Success rate
+
 ```bash
 # To train on the dataset.
 bash work_evaluate.sh
