@@ -34,8 +34,8 @@ net_size=hh.netsize
 #predicted_rr_dir='./predictions_rr/'
 result_path= os.path.join(output_name,'test_'+dataset_type+'_'+str(net_size))
 output_dir=os.path.join(result_path,'images_with_input')
-length_dir_temp=os.path.join(groundtruth_name,'flag_length')
-truth_dir=os.path.join(groundtruth_name,'flag_distance_matrix_true')
+length_dir_temp=os.path.join(groundtruth_name,'length')
+truth_dir=os.path.join(groundtruth_name,'matrix')
 for filename in os.listdir(output_dir):
 	temp=filename.split('.')
 	name_img=temp[0]

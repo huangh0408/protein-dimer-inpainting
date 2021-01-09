@@ -43,9 +43,10 @@ batch_size = hh.batch_size
 
 dataset_path=os.path.join(input_name,dataset_type)
 result_path= os.path.join(output_name,dataset_type+'_'+str(net_size)+'/')
-model_path = os.path.join(model_name,dataset_type+'_'+str(net_size))
+model_path = os.path.join(model_name,dataset_type+'_'+str(net_size)+'/')
 trainset_path = os.path.join(data_pickle,'protein_trainset_'+dataset_type+'_size'+str(net_size)+'.pickle')
 testset_path  = os.path.join(data_pickle,'protein_testset_'+dataset_type+'_size'+str(net_size)+'.pickle')
+#pretrained_model_path =pretrained_name
 if pretrained_name is not None:
     pretrained_model_path =None
 pretrained_model_path =None

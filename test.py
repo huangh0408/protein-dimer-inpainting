@@ -35,12 +35,17 @@ batch_size = hh.batch_size
 
 dataset_path=os.path.join(input_name,dataset_type)
 result_path= os.path.join(output_name,'test_'+dataset_type+'_'+str(net_size)+'/')
-model_path = os.path.join(model_name,dataset_type+'_'+str(net_size))
+result_path_output= os.path.join(result_path,'images_with_input'+'/')
+result_path_hid= os.path.join(result_path,'images_only_hid'+'/')
+model_path = os.path.join(model_name,dataset_type+'_'+str(net_size)+'/')
 trainset_path = os.path.join(data_pickle,'protein_trainset_'+dataset_type+'_size'+str(net_size)+'.pickle')
 testset_path  = os.path.join(data_pickle,'protein_testset_'+dataset_type+'_size'+str(net_size)+'.pickle')
-if pretrained_name is not None:
-    pretrained_model_path =None
-pretrained_model_path =None
+#if pretrained_name is not None:
+ #   pretrained_model_path =None
+#pretrained_model_path =None
+pretrained_model_path =pretrained_name
+if pretrained_name is None:
+    pretrained_model_path =model_path
 
 
 learning_rate_val = 0.005
@@ -144,8 +149,8 @@ for rec_val,img,x,y in zip(reconstruction_vals,test_images, xs, ys):
     name=test_image_paths[iii]
     name_temp=name.split('/')[-1]
     pdb_name=name_temp.split('.')[0]
-    cv2.imwrite( os.path.join(result_path, 'img_'+pdb_name+'_'+str(y)+'_'+str(xx)+'.test.jpg'), rec_con)
-    cv2.imwrite( os.path.join(result_path, 'hid_img_'+pdb_name+'_'+str(y)+'_'+str(xx)+'.test.jpg'), rec_hid_temp)
+    cv2.imwrite( os.path.join(result_path_output, 'img_'+pdb_name+'_'+str(y)+'_'+str(xx)+'.test.jpg'), rec_con)
+    cv2.imwrite( os.path.join(result_path_hid, 'hid_img_'+pdb_name+'_'+str(y)+'_'+str(xx)+'.test.jpg'), rec_hid_temp)
 #    cv2.imwrite( os.path.join(result_path, 'img_'+str(ii)+'_'+str(y)+'_'+str(xx)+'.test.jpg'), rec_con)
 #    cv2.imwrite( os.path.join(result_path, 'hid_img_'+str(ii)+'_'+str(y)+'_'+str(xx)+'.test.jpg'), rec_hid_temp)
         #cv2.imwrite( os.path.join(result_path, 'img_ori'+str(ii)+'.'+str(int(iters/1000))+'.jpg'), rec_con)
