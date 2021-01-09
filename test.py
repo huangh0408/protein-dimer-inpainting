@@ -69,6 +69,12 @@ hiding_size = net_size/2
 if not os.path.exists(result_path):
     os.makedirs( result_path )
 
+if not os.path.exists(result_path_output):
+    os.makedirs( result_path_output )
+
+if not os.path.exists(result_path_hid):
+    os.makedirs( result_path_hid )
+
 if not os.path.exists( testset_path ):
 
     testset_dir = os.path.join( dataset_path, 'eval_images' )
