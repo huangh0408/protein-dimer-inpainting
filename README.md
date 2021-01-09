@@ -9,7 +9,11 @@ git clone https://github.com/huangh0408/protein-dimer-inpainting.git
 
 Prerequisites
 * Python3
-* Tensorflow2.7
+* tensorflow-gpu
+* ipdb
+* opencv
+* glob
+* cPickle
 
 
 ## Datasets
@@ -36,10 +40,10 @@ bash work.sh
 
 ### on our datasets
 
-There are three folders to present  three kinds of datasets respectively. You can download the data [here](ftp:/202.112.126.139/protein-dimer-inpainting)
+There are three folders to present  three kinds of datasets respectively. You can download the data [here](ftp:/202.112.126.139/protein-dimer-inpainting). 
 
 ```bash
-# To train on the dataset.
+# To train on the dataset. Notice that you should modify the input file directory and checkpoint directory in the work_train.sh file.
 bash work_train.sh
 ```
 
@@ -60,7 +64,7 @@ There are three folders to present pre-trained for three kinds of datasets respe
 ### testing
 
 ```bash
-# To train on the dataset.
+# To test on the dataset. Notice that you should modify the test set directory and checkpoint directory in the work_test.sh file.
 bash work_test.sh
 ```
 
@@ -71,7 +75,7 @@ We calculate the precision,which is defined as TP/N. Such as Top 5, 10, 20, L/10
 ### Precision & Success rate
 
 ```bash
-# To train on the dataset.
+# To evaluate on the dataset. Notice that you should modify the output file directory and groundtruth file directory in th work_evaluate.sh file.
 bash work_evaluate.sh
 ```
 
@@ -84,4 +88,12 @@ If you use this code for your research, please cite our papers.
   journal={In Preparation},
   year={2021}
 }
+```
+
+## Acknowledgments
+
+Our inpainting codes refer to [Inpainting](https://github.com/jazzsaxmafia/Inpainting) and the readme.md file refers to [Rethinking-Inpainting-MEDFE](https://github.com/KumapowerLIU/Rethinking-Inpainting-MEDFE).
+
+## Contacts
+
 
