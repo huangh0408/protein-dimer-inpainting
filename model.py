@@ -281,12 +281,90 @@ class Model():
 
         return output[:,0]
 
+    def build_reconstruction_512(self, images,images_global,is_train):
+        batch_size = images.get_shape().as_list()[0]
+
+        with tf.variable_scope('GEN'):
+            conv00 = self.new_conv_layer(images, [4,4,3,32], stride=2, name="conv00-256-" )
+            bn00 = self.leaky_relu(self.batchnorm(conv00, is_train, name='bn00-256-'))
+            conv0 = self.new_conv_layer(bn00, [4,4,32,32], stride=2, name="conv0-256" )
+            bn0 = self.leaky_relu(self.batchnorm(conv0, is_train, name='bn0-256'))
+            conv1 = self.new_conv_layer(bn0, [4,4,32,64], stride=2, name="conv1-256" )
+            bn1 = self.leaky_relu(self.batchnorm(conv1, is_train, name='bn1-256'))
+            conv2 = self.new_conv_layer(bn1, [4,4,64,64], stride=2, name="conv2-256" )
+            bn2 = self.leaky_relu(self.batchnorm(conv2, is_train, name='bn2-256'))
+            conv3 = self.new_conv_layer(bn2, [4,4,64,128], stride=2, name="conv3-256")
+            bn3 = self.leaky_relu(self.batchnorm(conv3, is_train, name='bn3-256'))
+            conv4 = self.new_conv_layer(bn3, [4,4,128,256], stride=2, name="conv4-256")
+            bn4 = self.leaky_relu(self.batchnorm(conv4, is_train, name='bn4-256'))
+            conv5 = self.new_conv_layer(bn4, [4,4,256,512], stride=2, name="conv5-256")
+            bn5 = self.leaky_relu(self.batchnorm(conv5, is_train, name='bn5-256'))
+            conv6 = self.new_conv_layer(bn5, [4,4,512,4000], stride=2, padding='VALID', name='conv6-256')
+            bn6 = self.leaky_relu(self.batchnorm(conv6, is_train, name='bn6-256'))
+
+            deconv4 = self.new_deconv_layer( bn6, [4,4,512,4000], conv5.get_shape().as_list(), padding='VALID', stride=2, name="deconv4-256")
+            debn4 = tf.nn.relu(self.batchnorm(deconv4, is_train, name='debn4-256'))
+            deconv3 = self.new_deconv_layer( debn4, [4,4,256,512], conv4.get_shape().as_list(), stride=2, name="deconv3")
+            debn3 = tf.nn.relu(self.batchnorm(deconv3, is_train, name='debn3-256'))
+            deconv2 = self.new_deconv_layer( debn3, [4,4,128,256], conv3.get_shape().as_list(), stride=2, name="deconv2-256")
+            debn2 = tf.nn.relu(self.batchnorm(deconv2, is_train, name='debn2-256'))
+            deconv1 = self.new_deconv_layer( debn2, [4,4,64,128], conv2.get_shape().as_list(), stride=2, name="deconv1-256")
+            debn1 = tf.nn.relu(self.batchnorm(deconv1, is_train, name='debn1-256'))
+            deconv0 = self.new_deconv_layer( debn1, [4,4,64,64], conv1.get_shape().as_list(), stride=2, name="deconv0-256")
+            debn0 = tf.nn.relu(self.batchnorm(deconv0, is_train, name='debn0-256'))
+            deconv00 = self.new_deconv_layer( debn0, [4,4,32,64], conv0.get_shape().as_list(), stride=2, name="deconv00-256")
+            debn00 = tf.nn.relu(self.batchnorm(deconv00, is_train, name='debn00-256'))
+            recon = self.new_deconv_layer( debn00, [4,4,3,32], [batch_size,256,256,3], stride=2, name="recon-256")
+        return bn1, bn2, bn3, bn4, bn5, bn6, debn4, debn3, debn2, debn1, recon, tf.nn.tanh(recon)
+
+    def build_adversarial_512(self, images, is_train, reuse=None):
+        with tf.variable_scope('DIS', reuse=reuse):
+            conv00 = self.new_conv_layer(images, [4,4,3,32], stride=2, name="conv00-256" )
+            bn00 = self.leaky_relu(self.batchnorm(conv00, is_train, name='bn00-256'))
+            conv0 = self.new_conv_layer(bn00, [4,4,32,32], stride=2, name="conv0-256" )
+            bn0 = self.leaky_relu(self.batchnorm(conv0, is_train, name='bn0-256'))
+            conv1 = self.new_conv_layer(bn0, [4,4,32,64], stride=2, name="conv1-256" )
+            bn1 = self.leaky_relu(self.batchnorm(conv1, is_train, name='bn1-256'))
+            conv2 = self.new_conv_layer(bn1, [4,4,64,128], stride=2, name="conv2-256")
+            bn2 = self.leaky_relu(self.batchnorm(conv2, is_train, name='bn2-256'))
+            conv3 = self.new_conv_layer(bn2, [4,4,128,256], stride=2, name="conv3-256")
+            bn3 = self.leaky_relu(self.batchnorm(conv3, is_train, name='bn3-256'))
+            conv4 = self.new_conv_layer(bn3, [4,4,256,512], stride=2, name="conv4-256")
+            bn4 = self.leaky_relu(self.batchnorm(conv4, is_train, name='bn4-256'))
+
+            output = self.new_fc_layer( bn4, output_size=1, name='output-256')
+
+        return output[:,0]
+
+    def build_adversarial_temp_512(self, images, is_train,reuse=None):
+        with tf.variable_scope('DIS', reuse=reuse):
+            conv00 = self.new_conv_layer(images, [4,4,3,32], stride=2, name="conv00_temp-256" )
+            bn00 = self.leaky_relu(self.batchnorm(conv00, is_train, name='bn00_temp-256'))
+            conv0 = self.new_conv_layer(bn00, [4,4,32,32], stride=2, name="conv0_temp-256" )
+            bn0 = self.leaky_relu(self.batchnorm(conv0, is_train, name='bn0_temp-256'))
+            conv1 = self.new_conv_layer(bn0, [4,4,32,64], stride=2, name="conv1_temp-256" )
+            bn1 = self.leaky_relu(self.batchnorm(conv1, is_train, name='bn1_temp-256'))
+            conv2 = self.new_conv_layer(bn1, [4,4,64,128], stride=2, name="conv2_temp-256")
+            bn2 = self.leaky_relu(self.batchnorm(conv2, is_train, name='bn2_temp-256'))
+            conv3 = self.new_conv_layer(bn2, [4,4,128,256], stride=2, name="conv3_temp-256")
+            bn3 = self.leaky_relu(self.batchnorm(conv3, is_train, name='bn3_temp-256'))
+            conv4 = self.new_conv_layer(bn3, [4,4,256,512], stride=2, name="conv4_temp-256")
+            bn4 = self.leaky_relu(self.batchnorm(conv4, is_train, name='bn4_temp-256'))
+            conv5 = self.new_conv_layer(bn4, [4,4,512,512], stride=2, name="conv5_temp-256")
+            bn5 = self.leaky_relu(self.batchnorm(conv5, is_train, name='bn5_temp-256'))
+            output = self.new_fc_layer( bn5, output_size=1, name='output_temp-256')
+
+        return output[:,0]
+
     def build_reconstruction(self, images,images_global,ll,net_size,is_train):
         if net_size==128:
             t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12=self.build_reconstruction_128(images,images_global,is_train )
             return t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12
         elif net_size==256:
             t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12=self.build_reconstruction_256(images,images_global,is_train )
+            return t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12
+        elif net_size==512:
+            t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12=self.build_reconstruction_512(images,images_global,is_train )
             return t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12
 
     def build_adversarial(self, images,net_size, is_train,reuse=None):
@@ -296,6 +374,9 @@ class Model():
         elif net_size==256:
             s=self.build_adversarial_256(images,is_train, reuse)
             return s
+        elif net_size==512:
+            s=self.build_adversarial_512(images,is_train, reuse)
+            return s
 
     def build_adversarial_temp(self, images,net_size, is_train,reuse=None):
         if net_size==128:
@@ -303,4 +384,7 @@ class Model():
             return s
         elif net_size==256:
             s=self.build_adversarial_temp_256(images,is_train, reuse)
+            return s
+        elif net_size==512:
+            s=self.build_adversarial_temp_512(images,is_train, reuse)
             return s
