@@ -8,10 +8,10 @@ git clone https://github.com/huangh0408/protein-dimer-inpainting.git
 ```
 
 Prerequisites
-* Python3
-* tensorflow-gpu
+* Python 2.7
+* tensorflow-gpu 1.12.0
 * ipdb
-* opencv
+* opencv-python
 * glob
 * cPickle
 
@@ -78,6 +78,17 @@ We calculate the precision,which is defined as TP/N. Such as Top 5, 10, 20, L/10
 # To evaluate on the dataset. Notice that you should modify the output file directory and groundtruth file directory in th work_evaluate.sh file.
 bash work_evaluate.sh
 ```
+
+### Different Version
+
+#### scripts_version1.0 
+   original scripts without mask
+#### scripts_version2.0 
+   scripts with region mask
+#### scripts_version3.0 
+   implement in environment python 3.7
+#### scripts_demo 
+   jupyter-notebook to test our model
 
 ### Citation
 If you use this code for your research, please cite our papers.
