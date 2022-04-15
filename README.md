@@ -94,10 +94,11 @@ bash work_evaluate.sh
 If you use this code for your research, please cite our papers.
 ```
 @article{huang2021,
-  title={Generate inter-protein contact map by image inpainting},
+  title={Inter-protein contact map generated only from intra-monomer by image inpainting},
   author={He Huang, Chengshi Zeng, Xinqi Gong},
-  journal={In Preparation},
-  year={2021}
+  booktitle={2021 IEEE International Conference on Bioinformatics and Biomedicine (BIBM)},
+  year={2021},
+  doi={10.1109/BIBM52615.2021.9669709}
 }
 ```
 
